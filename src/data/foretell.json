@@ -1,0 +1,59 @@
+
+{
+  "session":{
+    "avg":20,
+    "endtime": "Fri, 03 Apr 2020 13:53:16 GMT",
+    "id":984,
+    "longesttimespent":35,
+    "name":"Beijing\nfor Glimpse Group 04/03/2020 13:44:00",
+    "shortesttimespent":10,
+    "starttime":"Fri, 03 Apr 2020 13:44:00 GMT",
+    "totalusers":3,
+    "users":[
+      {
+        "username":"VRHealth:bu_dev:gg39",
+        "earliestspeakingstart":"Fri, 03 Apr 2020 13:44:05 GMT",
+        "latestspeakingend":"Fri, 03 Apr 2020 13:52:38 GMT",
+        "speakingsegments": 47,
+        "segments":[
+          {
+            "id": 1,
+            "entrytime":"Fri, 03 Apr 2020 13:44:00 GMT",
+            "exittime":"Fri, 03 Apr 2020 13:53:10 GMT" 
+          },
+          {
+            "id": 2,
+            "entrytime":"Fri, 03 Apr 2020 13:44:00 GMT",
+            "exittime":"Fri, 03 Apr 2020 13:53:10 GMT"
+          }
+        ]
+      },
+      {
+        "username":"VRHealth:bu_dev:gg40",
+        "earliestspeakingstart":"Fri, 03 Apr 2020 13:44:05 GMT",
+        "latestspeakingend":"Fri, 03 Apr 2020 13:52:10 GMT",
+        "speakingsegments": 39,
+        "segments":[
+          {
+            "id": 1,
+            "entrytime":"Fri, 03 Apr 2020 13:44:01 GMT",
+            "exittime":"Fri, 03 Apr 2020 13:46:29 GMT"
+          }
+        ]
+      },
+      {
+        "username":"VRHealth:bu_dev:gg41",
+        "earliestspeakingstart":"Fri, 03 Apr 2020 13:47:41 GMT",
+        "latestspeakingend":"Fri, 03 Apr 2020 13:48:59 GMT",
+        "speakingsegments": 7,
+        "segments":[
+          {
+            "id": 1,
+            "entrytime":"Fri, 03 Apr 2020 13:47:34 GMT",
+            "exittime":"Fri, 03 Apr 2020 13:49:09 GMT"
+          }
+        ]
+      }
+    ]
+  }
+}
