@@ -6,6 +6,7 @@ import axios from 'axios';
 // import Chart from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 import BarChart from './components/BarChart';
+import LineChart from './components/LineChart';
 
 function App() {
 	const [session, setSession] = useState([]);
@@ -104,6 +105,10 @@ function App() {
 			) : (
 				<p>'select parameter'</p>
 			)}
+			<div style={{ border: '1px solid red', paddingBottom: 200 }}>
+				<h1>Line Graph</h1>
+				<LineChart />
+			</div>
 		</div>
 	);
 }
