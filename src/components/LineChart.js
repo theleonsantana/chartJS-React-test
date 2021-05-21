@@ -16,15 +16,16 @@ function LineChart() {
 	});
 	const [loaded, setLoaded] = useState(false);
 	const [timeOptions] = useState(['month', 'year', 'day', 'hour']);
+	const [timeSection, setTimeSelection] = useState('month');
 	// http request
 	// useEffect(() => {
 
 	// 	// filterData(aggreage.data);
 	// }, [startDate, endDate]);
 
-	const handleSubmit = () => {
-		let endPoint = `https://square-voice-6674.guapro.workers.dev/?https://test-foretell-bpalms.adeptreality.com/sessions/sessionsovertime/hour/${startDate}/${endDate}`;
-		let newEndPoint = `https://square-voice-6674.guapro.workers.dev/?https://test-foretell-bpalms.adeptreality.com/sessions/sessionsovertime/3/day/${startDate}/${endDate}`;
+	const handleSubmit = (e) => {
+		// let endPoint = `https://square-voice-6674.guapro.workers.dev/?https://test-foretell-bpalms.adeptreality.com/sessions/sessionsovertime/hour/${startDate}/${endDate}`;
+		let newEndPoint = `https://square-voice-6674.guapro.workers.dev/?https://test-foretell-bpalms.adeptreality.com/sessions/sessionsovertime/3/${timeSection}/${startDate}/${endDate}`;
 		axios
 			.get(newEndPoint)
 			.then((response) => {
@@ -45,6 +46,12 @@ function LineChart() {
 			.catch((error) => {
 				console.log(error);
 			});
+		e.preventDefault();
+	};
+
+	const handleStartDate = (e) => {
+		e.preventDefault();
+		setStartDate(e.target.value);
 	};
 
 	const data = {
@@ -96,32 +103,42 @@ function LineChart() {
 
 	return (
 		<div>
-			<div className="start-date">
-				<selec>
-					<options></options>
-				</selec>
-				<label>Start Date:</label>
-				<div className="control">
-					<input
-						value={startDate || ''}
-						onChange={(e) => setStartDate(e.target.value)}
-						type="text"
-						placeholder="YYYY-MM-DD"
-					/>
+			<form action="query" onSubmit={handleSubmit}>
+				<div className="start-date">
+					<label>Start Date:</label>
+					<div className="control">
+						<input
+							value={startDate || ''}
+							onChange={handleStartDate}
+							type="text"
+							placeholder="YYYY-MM-DD"
+						/>
+					</div>
 				</div>
-			</div>
-			<div className="end-date">
-				<label>End Date:</label>
-				<div className="control">
-					<input
-						value={endDate || ''}
-						onChange={(e) => setEndDate(e.target.value)}
-						type="text"
-						placeholder="YYYY-MM-DD"
-					/>
+				<div className="end-date">
+					<label>End Date:</label>
+					<div className="control">
+						<input
+							value={endDate || ''}
+							onChange={(e) => setEndDate(e.target.value)}
+							type="text"
+							placeholder="YYYY-MM-DD"
+						/>
+					</div>
 				</div>
-			</div>
-			<button onClick={handleSubmit}>Search</button>
+				<div className="options-dates">
+					<label>Time:</label>
+					<select
+						value={timeSection}
+						onChange={(e) => setTimeSelection(e.currentTarget.value)}
+					>
+						{timeOptions.map((timeOpt) => (
+							<option value={timeOpt}>{timeOpt}</option>
+						))}
+					</select>
+				</div>
+				<button type="submit">Search</button>
+			</form>
 			{loaded && (
 				<div>
 					<div>
