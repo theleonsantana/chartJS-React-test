@@ -15,7 +15,7 @@ function LineChart() {
 		title: '',
 	});
 	const [loaded, setLoaded] = useState(false);
-
+	const [timeOptions] = useState(['month', 'year', 'day', 'hour']);
 	// http request
 	// useEffect(() => {
 
@@ -24,8 +24,9 @@ function LineChart() {
 
 	const handleSubmit = () => {
 		let endPoint = `https://square-voice-6674.guapro.workers.dev/?https://test-foretell-bpalms.adeptreality.com/sessions/sessionsovertime/hour/${startDate}/${endDate}`;
+		let newEndPoint = `https://square-voice-6674.guapro.workers.dev/?https://test-foretell-bpalms.adeptreality.com/sessions/sessionsovertime/3/day/${startDate}/${endDate}`;
 		axios
-			.get(endPoint)
+			.get(newEndPoint)
 			.then((response) => {
 				let data = response.data;
 				setIncomingData({
@@ -96,6 +97,9 @@ function LineChart() {
 	return (
 		<div>
 			<div className="start-date">
+				<selec>
+					<options></options>
+				</selec>
 				<label>Start Date:</label>
 				<div className="control">
 					<input
