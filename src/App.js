@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import BarChart from './components/BarChart';
 import LineChart from './components/LineChart';
+import BrokenLineChart from './components/BrokenLineChart';
 
 function App() {
 	const [session, setSession] = useState([]);
@@ -108,6 +109,9 @@ function App() {
 			<div style={{ border: '1px solid red', paddingBottom: 200 }}>
 				<h1>Line Graph</h1>
 				<LineChart />
+			</div>
+			<div style={{ border: '1px solid blue', paddingBottom: 200 }}>
+				<BrokenLineChart />
 			</div>
 		</div>
 	);
