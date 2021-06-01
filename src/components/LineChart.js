@@ -263,6 +263,7 @@ function LineChart() {
 					</Paper>
 					<div>
 						<Paper elevation={3} style={{ marginTop: 30 }}>
+							<h1 style={{ padding: `20px 40px 0` }}>Sessions</h1>
 							<List dense component="span">
 								{sessions
 									.slice((page - 1) * itemsPerPAge, page * itemsPerPAge)
@@ -274,6 +275,7 @@ function LineChart() {
 												component="a"
 												href={`https://test-foretell-bpalms.adeptreality.com/userbreakdown/graph?session=${uniqSesssion.session_id}`}
 												target="_blank"
+												style={{ paddingLeft: 40 }}
 												// onClick={() => console.log('clicked')}
 												// onClick={`location.href = https://test-foretell-bpalms.adeptreality.com/userbreakdown/graph?session=${uniqSesssion.session_id}`}
 											>
