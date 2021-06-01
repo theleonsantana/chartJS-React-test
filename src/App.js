@@ -4,6 +4,8 @@ import axios from 'axios';
 // chart js
 // import StaticData from './data/foretell.json';
 // import Chart from 'chart.js/auto';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Paper } from '@material-ui/core';
 import { Line } from 'react-chartjs-2';
 import BarChart from './components/BarChart';
 import LineChart from './components/LineChart';
@@ -73,8 +75,8 @@ function App() {
 	// if the element is unmounted make sure to clear the selection, this will be true if there was an api called populating the component
 
 	return (
-		<div className="App">
-			<div
+		<Grid container className="App" style={{ padding: 30 }}>
+			{/* <div
 			// style={{
 			// 	width: 200,
 			// 	height: 'auto',
@@ -105,15 +107,15 @@ function App() {
 				/>
 			) : (
 				<p>'select parameter'</p>
-			)}
-			<div style={{ border: '1px solid red', paddingBottom: 200 }}>
-				<h1>Line Graph</h1>
+			)} */}
+			<div style={{ textAlign: 'left' }}>
+				<h1>Aggregate Graph</h1>
 				<LineChart />
 			</div>
-			<div style={{ border: '1px solid blue', paddingBottom: 200 }}>
+			{/* <div>
 				<BrokenLineChart />
-			</div>
-		</div>
+			</div> */}
+		</Grid>
 	);
 }
 

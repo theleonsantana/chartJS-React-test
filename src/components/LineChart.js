@@ -2,9 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
 
+import {
+	Grid,
+	Paper,
+	FormControl,
+	Select,
+	FormHelperText,
+	MenuItem,
+	InputLabel,
+	Button,
+} from '@material-ui/core';
+import MomentUtils from '@date-io/moment';
+import moment from 'moment';
+import {
+	MuiPickersUtilsProvider,
+	KeyboardTimePicker,
+	KeyboardDatePicker,
+} from '@material-ui/pickers';
+
 function LineChart() {
-	const [startDate, setStartDate] = useState();
-	const [endDate, setEndDate] = useState();
+	const [selectDate, setDate] = useState(moment());
+	const [startDate, setStartDate] = useState(moment().format('YYYY-MM-DD'));
+	const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'));
 	const [incomingData, setIncomingData] = useState({
 		aggregates: [],
 		data: [],
@@ -17,6 +36,7 @@ function LineChart() {
 	const [loaded, setLoaded] = useState(false);
 	const [timeOptions] = useState(['month', 'year', 'day', 'hour']);
 	const [timeSection, setTimeSelection] = useState('month');
+	const [sessions, setSessions] = useState([]);
 	// http request
 	// useEffect(() => {
 
@@ -49,9 +69,23 @@ function LineChart() {
 		e.preventDefault();
 	};
 
-	const handleStartDate = (e) => {
-		e.preventDefault();
-		setStartDate(e.target.value);
+	const handleStartDate = (startDate, value) => {
+		setDate(startDate);
+		setStartDate(value);
+	};
+
+	const handleEndDate = (endDate, value) => {
+		setDate(endDate);
+		setEndDate(value);
+	};
+
+	const dateFormatter = (str) => {
+		return str;
+	};
+
+	const handleTimePeriods = (e) => {
+		const time = e.target.name;
+		setTimeSelection(e.target.value);
 	};
 
 	const data = {
@@ -103,30 +137,40 @@ function LineChart() {
 
 	return (
 		<div>
-			<form action="query" onSubmit={handleSubmit}>
-				<div className="start-date">
-					<label>Start Date:</label>
-					<div className="control">
-						<input
-							value={startDate || ''}
-							onChange={handleStartDate}
-							type="text"
-							placeholder="YYYY-MM-DD"
-						/>
-					</div>
-				</div>
-				<div className="end-date">
-					<label>End Date:</label>
-					<div className="control">
-						<input
-							value={endDate || ''}
-							onChange={(e) => setEndDate(e.target.value)}
-							type="text"
-							placeholder="YYYY-MM-DD"
-						/>
-					</div>
-				</div>
-				<div className="options-dates">
+			<Grid container justify="space-around">
+				<MuiPickersUtilsProvider utils={MomentUtils}>
+					<KeyboardDatePicker
+						autoOk={true}
+						showTodayButton={true}
+						variant="inline"
+						format="YYYY-MM-DD"
+						margin="normal"
+						id="date-picker-inline"
+						label="Start Date"
+						inputValue={startDate}
+						onChange={handleStartDate}
+						KeyboardButtonProps={{
+							'aria-label': 'change date',
+						}}
+						style={{ marginRight: 10 }}
+					/>
+					<KeyboardDatePicker
+						autoOk={true}
+						showTodayButton={true}
+						variant="inline"
+						format="YYYY-MM-DD"
+						margin="normal"
+						id="date-picker-inline"
+						label="End Date"
+						inputValue={endDate}
+						onChange={handleEndDate}
+						KeyboardButtonProps={{
+							'aria-label': 'change date',
+						}}
+						style={{ marginRight: 10 }}
+					/>
+				</MuiPickersUtilsProvider>
+				{/* <div className="options-dates">
 					<label>Time:</label>
 					<select
 						value={timeSection}
@@ -136,9 +180,26 @@ function LineChart() {
 							<option value={timeOpt}>{timeOpt}</option>
 						))}
 					</select>
-				</div>
-				<button type="submit">Search</button>
-			</form>
+				</div> */}
+				<FormControl style={{ minWidth: 150, marginRight: 10 }}>
+					<InputLabel>Time Periods:</InputLabel>
+					<Select native value={timeSection} onChange={handleTimePeriods}>
+						{timeOptions.map((timeOpt) => (
+							<option value={timeOpt}>{timeOpt}</option>
+						))}
+					</Select>
+				</FormControl>
+				<Button
+					variant="contained"
+					size="small"
+					color="primary"
+					type="submit"
+					onClick={handleSubmit}
+				>
+					Search
+				</Button>
+			</Grid>
+
 			{loaded && (
 				<div>
 					<div>
