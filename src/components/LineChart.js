@@ -11,7 +11,13 @@ import {
 	MenuItem,
 	InputLabel,
 	Button,
+	List,
+	ListItem,
+	ListItemText,
+	Divider,
+	Box,
 } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import {
@@ -37,6 +43,10 @@ function LineChart() {
 	const [timeOptions] = useState(['month', 'year', 'day', 'hour']);
 	const [timeSection, setTimeSelection] = useState('month');
 	const [sessions, setSessions] = useState([]);
+	// Pagination front-end
+	const itemsPerPAge = 10;
+	const [page, setPage] = useState(1);
+	const [noOfPages, setNoOfPages] = useState(0);
 	// http request
 	// useEffect(() => {
 
@@ -61,11 +71,15 @@ function LineChart() {
 				});
 				// console.log(endPoint);
 				console.log(data);
+				setSessions(data.Sessions);
 				setLoaded(true);
 			})
 			.catch((error) => {
 				console.log(error);
 			});
+		// sessions
+		// 	? setNoOfPages(Math.ceil(sessions.length / itemsPerPAge))
+		// 	: console.log('loading sessions');
 		e.preventDefault();
 	};
 
@@ -88,6 +102,14 @@ function LineChart() {
 		setTimeSelection(e.target.value);
 	};
 
+	const handleNewPage = (e, value) => {
+		setPage(value);
+	};
+
+	useEffect(() => {
+		setNoOfPages(Math.ceil(sessions.length / itemsPerPAge));
+	}, [sessions]);
+
 	const data = {
 		labels: incomingData.dataLabels,
 		datasets: [
@@ -103,6 +125,7 @@ function LineChart() {
 	const options = {
 		maintainAspectRatio: false,
 		indexAxis: 'x',
+
 		scales: {
 			y: {
 				beginAtZero: true,
@@ -126,7 +149,7 @@ function LineChart() {
 		responsive: true,
 		plugins: {
 			legend: {
-				position: 'right',
+				position: 'bottom',
 			},
 			title: {
 				display: true,
@@ -136,8 +159,8 @@ function LineChart() {
 	};
 
 	return (
-		<div>
-			<Grid container justify="space-around">
+		<div style={{ width: `100%` }}>
+			<Grid container justify="flex-left">
 				<MuiPickersUtilsProvider utils={MomentUtils}>
 					<KeyboardDatePicker
 						autoOk={true}
@@ -170,18 +193,14 @@ function LineChart() {
 						style={{ marginRight: 10 }}
 					/>
 				</MuiPickersUtilsProvider>
-				{/* <div className="options-dates">
-					<label>Time:</label>
-					<select
-						value={timeSection}
-						onChange={(e) => setTimeSelection(e.currentTarget.value)}
-					>
-						{timeOptions.map((timeOpt) => (
-							<option value={timeOpt}>{timeOpt}</option>
-						))}
-					</select>
-				</div> */}
-				<FormControl style={{ minWidth: 150, marginRight: 10 }}>
+				<FormControl
+					style={{
+						minWidth: 150,
+						marginRight: 10,
+						marginTop: 16,
+						marginBottom: 8,
+					}}
+				>
 					<InputLabel>Time Periods:</InputLabel>
 					<Select native value={timeSection} onChange={handleTimePeriods}>
 						{timeOptions.map((timeOpt) => (
@@ -195,45 +214,107 @@ function LineChart() {
 					color="primary"
 					type="submit"
 					onClick={handleSubmit}
+					style={{ marginTop: 16, marginBottom: 8 }}
 				>
 					Search
 				</Button>
 			</Grid>
-
 			{loaded && (
-				<div>
-					<div>
-						<h1>Overview</h1>
-						<h3>{incomingData.title}</h3>
-						<p>
-							<b>From: </b>
-							{incomingData.aggregates[`From Time`]} <b>To: </b>
-							{incomingData.aggregates[`Start Time`]}
-						</p>
-						<p>
-							<b>Avg Length of Session:</b>{' '}
-							{incomingData.aggregates[`Avg Length of Session`]}
-						</p>
-						<p>
-							<b>Avg Users Per Session:</b>{' '}
-							{incomingData.aggregates[`Avg Users Per Session`]}
-						</p>
-						<p>
-							<b>Total Sessions:</b>{' '}
-							{incomingData.aggregates[`Total Session Count`]}
-						</p>
-					</div>
-
-					{/* <button onClick={handleClear}>Clear</button> */}
-					<div
-						style={{
-							width: '100%',
-							height: 500,
-						}}
+				<React.Fragment>
+					<Paper
+						elevation={3}
+						style={{ padding: `20px 40px`, marginTop: 30, height: 500 }}
 					>
-						<Line data={data} options={options} />
+						<Grid container>
+							<Grid item xs={3}>
+								<h1>Overview</h1>
+								<h3>{incomingData.title}</h3>
+								<p>
+									<b>From: </b>
+									{incomingData.aggregates[`From Time`]} <b>To: </b>
+									{incomingData.aggregates[`Start Time`]}
+								</p>
+								<p>
+									<b>Avg Length of Session:</b>{' '}
+									{incomingData.aggregates[`Avg Length of Session`]}
+								</p>
+								<p>
+									<b>Avg Users Per Session:</b>{' '}
+									{incomingData.aggregates[`Avg Users Per Session`]}
+								</p>
+								<p>
+									<b>Total Sessions:</b>{' '}
+									{incomingData.aggregates[`Total Session Count`]}
+								</p>
+							</Grid>
+
+							{/* <button onClick={handleClear}>Clear</button> */}
+							<Grid
+								item
+								xs
+								style={{
+									width: 600,
+									height: 500,
+								}}
+							>
+								<Line data={data} options={options} />
+							</Grid>
+						</Grid>
+					</Paper>
+					<div>
+						<Paper elevation={3} style={{ marginTop: 30 }}>
+							<List dense component="span">
+								{sessions
+									.slice((page - 1) * itemsPerPAge, page * itemsPerPAge)
+									.map((uniqSesssion) => {
+										return (
+											<ListItem
+												key={uniqSesssion.session_id}
+												button
+												component="a"
+												href={`https://test-foretell-bpalms.adeptreality.com/userbreakdown/graph?session=${uniqSesssion.session_id}`}
+												target="_blank"
+												// onClick={() => console.log('clicked')}
+												// onClick={`location.href = https://test-foretell-bpalms.adeptreality.com/userbreakdown/graph?session=${uniqSesssion.session_id}`}
+											>
+												<ListItemText
+													primary={
+														<p>
+															<b>ID: </b>
+															{uniqSesssion.session_id}
+															<b>Session Name: </b>
+															{uniqSesssion.session_name}
+														</p>
+													}
+													secondary={
+														<>
+															<p>
+																<b>Beginning at: </b> {uniqSesssion.start_time}{' '}
+																<b>Ending at:</b> {uniqSesssion.end_time}
+															</p>
+														</>
+													}
+												/>
+											</ListItem>
+										);
+									})}
+							</List>
+							<Divider />
+							<Box component="span">
+								<Pagination
+									count={noOfPages}
+									page={page}
+									onChange={handleNewPage}
+									defaultPage={1}
+									color="primary"
+									size="small"
+									showFirstButton
+									showLastButton
+								/>
+							</Box>
+						</Paper>
 					</div>
-				</div>
+				</React.Fragment>
 			)}
 		</div>
 	);

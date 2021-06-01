@@ -108,10 +108,10 @@ function App() {
 			) : (
 				<p>'select parameter'</p>
 			)} */}
-			<div style={{ textAlign: 'left' }}>
+			<Grid item xs style={{ textAlign: 'left' }}>
 				<h1>Aggregate Graph</h1>
 				<LineChart />
-			</div>
+			</Grid>
 			{/* <div>
 				<BrokenLineChart />
 			</div> */}
