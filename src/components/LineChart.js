@@ -283,8 +283,7 @@ function LineChart() {
 													primary={
 														<p>
 															<b>ID: </b>
-															{uniqSesssion.session_id}
-															<b>Session Name: </b>
+															{uniqSesssion.session_id} <b>Session Name: </b>
 															{uniqSesssion.session_name}
 														</p>
 													}
@@ -293,6 +292,12 @@ function LineChart() {
 															<p>
 																<b>Beginning at: </b> {uniqSesssion.start_time}{' '}
 																<b>Ending at:</b> {uniqSesssion.end_time}
+															</p>
+															<p>
+																<b>Distinct Users: </b>{' '}
+																{uniqSesssion['Distinct Users']}{' '}
+																<b>Number of User Entries: </b>{' '}
+																{uniqSesssion['Number of Uer Entries']}
 															</p>
 														</>
 													}
