@@ -16,7 +16,9 @@ import {
 	ListItemText,
 	Divider,
 	Box,
+	Link,
 } from '@material-ui/core';
+import { DataGrid } from '@material-ui/data-grid';
 import Pagination from '@material-ui/lab/Pagination';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
@@ -107,6 +109,9 @@ function LineChart() {
 	};
 
 	useEffect(() => {
+		sessions.forEach((item, i) => {
+			item.id = i + 1;
+		});
 		setNoOfPages(Math.ceil(sessions.length / itemsPerPAge));
 	}, [sessions]);
 
@@ -157,6 +162,62 @@ function LineChart() {
 			},
 		},
 	};
+	const columns = [
+		{
+			field: 'id',
+			headerName: 'ID',
+			width: 100,
+			hide: true,
+		},
+		{
+			field: 'session_id',
+			headerName: 'Session ID',
+			type: 'number',
+			width: 150,
+			align: 'left',
+			headerAlign: 'left',
+			renderCell: (params) => (
+				<>
+					{params.value}
+					<strong>
+						<Link
+							href={`https://test-foretell-bpalms.adeptreality.com/userbreakdown/graph?session=${params.value}`}
+							target="_blank"
+							style={{ marginLeft: 10 }}
+							// onClick={(e) => e.preventDefault()}
+						>
+							View Session
+						</Link>
+					</strong>
+				</>
+			),
+		},
+		{
+			field: 'session_name',
+			headerName: 'Session Name',
+			flex: 1,
+			sortable: false,
+		},
+		{
+			field: 'start_time',
+			headerName: 'Start Time',
+			width: 250,
+			sortable: false,
+		},
+		{ field: 'end_time', headerName: 'End Time', width: 250, sortable: false },
+		{
+			field: [`Distinct Users`],
+			headerName: 'Uniq. Users',
+			type: 'number',
+			width: 170,
+		},
+		{
+			field: [`Number of Uer Entries`],
+			headerName: 'Entries Per User',
+			type: 'number',
+			width: 170,
+		},
+	];
 
 	return (
 		<div style={{ width: `100%` }}>
@@ -264,7 +325,7 @@ function LineChart() {
 					<div>
 						<Paper elevation={3} style={{ marginTop: 30 }}>
 							<h1 style={{ padding: `20px 40px 0` }}>Sessions</h1>
-							<List dense component="span">
+							{/* <List dense component="span">
 								{sessions
 									.slice((page - 1) * itemsPerPAge, page * itemsPerPAge)
 									.map((uniqSesssion) => {
@@ -318,7 +379,16 @@ function LineChart() {
 									showFirstButton
 									showLastButton
 								/>
-							</Box>
+							</Box> */}
+							<div style={{ height: 400, width: '100%' }}>
+								<DataGrid
+									rows={sessions}
+									columns={columns}
+									pageSize={10}
+									disableColumnFilter
+									disableColumnMenu
+								/>
+							</div>
 						</Paper>
 					</div>
 				</React.Fragment>
