@@ -42,8 +42,8 @@ function LineChart() {
 		title: '',
 	});
 	const [loaded, setLoaded] = useState(false);
-	const [timeOptions] = useState(['month', 'year', 'day', 'hour']);
-	const [timeSection, setTimeSelection] = useState('month');
+	const [timeOptions] = useState(['year', 'month', 'day', 'hour']);
+	const [timeSection, setTimeSelection] = useState('day');
 	const [sessions, setSessions] = useState([]);
 	// Pagination front-end
 	const itemsPerPAge = 10;
@@ -82,6 +82,9 @@ function LineChart() {
 		// sessions
 		// 	? setNoOfPages(Math.ceil(sessions.length / itemsPerPAge))
 		// 	: console.log('loading sessions');
+		sessions.forEach((item, i) => {
+			item.id = i + 1;
+		});
 		e.preventDefault();
 	};
 
@@ -108,12 +111,7 @@ function LineChart() {
 		setPage(value);
 	};
 
-	useEffect(() => {
-		sessions.forEach((item, i) => {
-			item.id = i + 1;
-		});
-		setNoOfPages(Math.ceil(sessions.length / itemsPerPAge));
-	}, [sessions]);
+	// setNoOfPages(Math.ceil(sessions.length / itemsPerPAge));
 
 	const data = {
 		labels: incomingData.dataLabels,
@@ -165,8 +163,8 @@ function LineChart() {
 	const columns = [
 		{
 			field: 'id',
-			headerName: 'ID',
-			width: 100,
+			headerName: 'id',
+			// width: 100,
 			hide: true,
 		},
 		{
